@@ -1,0 +1,41 @@
+name: 'Setup Poetry'
+description: 'Setup Poetry and dependency caching'
+inputs:
+  python-version:
+    description: 'Version of python to install'
+    required: true
+    default: '3.9'
+  poetry-version:
+    description: 'Version of poetry to install'
+    required: true
+    default: '1.2.1'
+  venv-path:
+    description: 'Path to the virtual environment'
+    required: false
+    default: '.venv'
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python ${{ inputs.python-version }} 🐍
+      uses: actions/setup-python@0ebf233433c08fb9061af664d501c3f3ff0e9e20 # v3.0
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Cache poetry install
+      uses: actions/cache@v2
+      with:
+        path: ~/.local
+        key: poetry-${{ inputs.poetry-version }}-0
+
+    - uses: snok/install-poetry@2bf112a0f6979928eb6b011f39700db589c5961e
+      with:
+        version: ${{ inputs.poetry-version }}
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Cache python dependencies
+      id: cache-deps
+      uses: actions/cache@v2
+      with:
+        path: ${{ inputs.venv-path }}
+        key: pydeps-${{ hashFiles('**/poetry.lock') }}
