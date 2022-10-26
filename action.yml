@@ -25,7 +25,7 @@ runs:
       uses: actions/cache@v2
       with:
         path: ~/.local
-        key: poetry-${{ inputs.poetry-version }}-0
+        key: ${{ runner.os }}-poetry-${{ inputs.python-version }}-${{ inputs.poetry-version }}-0
 
     - uses: snok/install-poetry@2bf112a0f6979928eb6b011f39700db589c5961e
       with:
@@ -38,4 +38,4 @@ runs:
       uses: actions/cache@v2
       with:
         path: ${{ inputs.venv-path }}
-        key: pydeps-${{ hashFiles('**/poetry.lock') }}
+        key: ${{ runner.os }}-pydeps-${{ inputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
