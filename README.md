@@ -5,6 +5,8 @@ This action sets up
 * poetry
 * dependency caching
 
+The action is build as a composite action, reusing existing actions.
+
 ## Inputs
 
 ## `python-version`
